@@ -1,31 +1,43 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-// replace these with real values or import them instead
 const JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTg3MzcwOTAsImV4cCI6MTc5MDI3MzA5NywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIktleSI6IldFQkNIQVNFIn0.8Wgpm-J2YXjaqhpmpb7m_IsJJAom-s1qV1umxOPzdqE'
 const KEY = 'WEBCHASE'
 
-export default function Round4(){   
+export default function Round4() {
   const [val, setVal] = useState('')
   const [msg, setMsg] = useState('')
   const navigate = useNavigate()
 
-  function handleChange(e){
-    const v = e.target.value
-    setVal(v)
+  function checkKey(input) {
+    if (input === JWT) {
+      setMsg('It is a JWT token, not the key')
+      return
+    }
+
+    if (input === KEY) {
+      setMsg('Congratulations!')
+      setTimeout(() => {
+        // Redirect to internal page
+        // navigate('/next')
+
+        // Or redirect to external URL
+        window.location.href = 'https://sdc-password-game.vercel.app'
+      }, 700)
+      return
+    }
+
+    setMsg('Wrong key, try again!')
+  }
+
+  function handleChange(e) {
+    setVal(e.target.value)
     setMsg('')
+    checkKey(e.target.value) // live feedback on typing
+  }
 
-    if (v === JWT) {
-      setMsg('it is a jwt token, not the key')
-      return
-    }
-
-    if (v === KEY) {
-      setMsg('congratulations')
-      // small delay so user sees the message before navigation
-      setTimeout(() => navigate('/next'), 700)
-      return
-    }
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') checkKey(val) // submit on Enter
   }
 
   return (
@@ -36,12 +48,18 @@ export default function Round4(){
           className="input"
           value={val}
           onChange={handleChange}
+          onKeyDown={handleKeyPress}
           aria-label="key-input"
           autoFocus
         />
-        <h2 className = "texts">HINT : "Follow @SDC Insta && https://www.instagram.com/frontend_frenzy?igsh=MWxjMXY0cjNqcDBnMA=="</h2>
+        <h2 className="texts">
+          HINT: Follow @SDC Insta &nbsp;
+          <a href="https://www.instagram.com/frontend_frenzy/" target="_blank" rel="noreferrer">
+            frontend_frenzy
+          </a>
+        </h2>
         {msg && (
-          <p className={`message ${msg === 'congratulations' ? 'success' : 'info'}`}>
+          <p className={`message ${msg === 'Congratulations!' ? 'success' : 'info'}`}>
             {msg}
           </p>
         )}

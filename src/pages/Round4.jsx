@@ -12,7 +12,7 @@ setMsg('')
 
 
 if (v === JWT) {
-setMsg('it is a jwt toke not the key')
+setMsg('it is a jwt token not the key')
 return
 }
 
@@ -20,7 +20,7 @@ return
 if (v === KEY) {
 setMsg('congradulations')
 // small delay so user sees the message before navigation
-setTimeout(() => navigate('/next'), 700)
+setTimeout(() => navigate("https://sdc-password-game.vercel.app"), 700)
 return
 }
 }
